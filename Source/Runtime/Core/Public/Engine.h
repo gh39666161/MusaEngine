@@ -1,3 +1,3 @@
-﻿#pragma once
+#pragma once
 #include "Core.h"
-#include "BaseApplication.h"
+#include "Application.h"

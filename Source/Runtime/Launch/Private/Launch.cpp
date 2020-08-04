@@ -1,8 +1,11 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include "Engine.h"
+#include "Launch.h"
 USE_ENGINE()
 
+ENGINE_BEGIN()
 extern FApplication* GPApp;
+ENGINE_END()
 
 int main(int argc, char* argv[])
 {
