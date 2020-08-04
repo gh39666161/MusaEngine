@@ -1,4 +1,4 @@
-#include "BaseApplication.h"
+﻿#include "BaseApplication.h"
 
 ENGINE_BEGIN()
 FBaseApplication::FBaseApplication():MBQuit(false)

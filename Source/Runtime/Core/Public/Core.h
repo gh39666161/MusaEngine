@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // Marcos
 #define ENGINE_BEGIN() namespace Engine {
