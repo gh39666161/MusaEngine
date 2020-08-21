@@ -1,6 +1,6 @@
 #pragma once
-#include "Core.h"
-#include "RuntimeModule.h"
+#include "Core/Public/Core.h"
+#include "Core/Public/RuntimeModule.h"
 
 ENGINE_BEGIN()
 class FApplication : public FRuntimeModule

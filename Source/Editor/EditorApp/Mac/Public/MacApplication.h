@@ -1,6 +1,6 @@
 #pragma once
-#include "Core.h"
-#include "Application.h"
+#include "Core/Public/Core.h"
+#include "Platform/Public/Application.h"
 
 ENGINE_BEGIN()
 class FMacApplication : public FApplication {

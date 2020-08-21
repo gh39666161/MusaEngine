@@ -1,6 +1,6 @@
-#import "AppDelegate.h"
-#import "WindowDelegate.h"
-#include "MacApplication.h"
+#import "EditorApp/Mac/Public/AppDelegate.h"
+#import "EditorApp/Mac/Public/WindowDelegate.h"
+#import "EditorApp/Mac/Public/MacApplication.h"
 ENGINE_BEGIN()
 FMacApplication::FMacApplication():FApplication()
 {
@@ -19,20 +19,6 @@ void FMacApplication::CreateMainWindow()
 
     // Menu
     NSString* appName = @"MusaEngine";
-    id menubar = [[NSMenu alloc] initWithTitle:appName];
-    id appMenuItem = [NSMenuItem new];
-    [menubar addItem:appMenuItem];
-    [NSApp setMainMenu:menubar];
-    [menubar release];
-
-    id appMenu = [NSMenu new];
-    id quitMenuItem = [[NSMenuItem alloc] initWithTitle:@"Quit"
-                                                 action:@selector(terminate:)
-                                          keyEquivalent:@"q"];
-    [appMenu addItem:quitMenuItem];
-    [appMenuItem setSubmenu:appMenu];
-    [appMenu release];
-    [appMenuItem release];
 
     id appDelegate = [AppDelegate new];
     [NSApp setDelegate:appDelegate];
@@ -44,16 +30,19 @@ void FMacApplication::CreateMainWindow()
                       NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
 
     MPWindow = [[NSWindow alloc]
-        initWithContentRect:CGRectMake(0, 0, 500, 500)
+                initWithContentRect:CGRectMake(450, 100, 500, 500)
                   styleMask:style
                     backing:NSBackingStoreBuffered
                       defer:NO];
-    id winDelegate = [WindowDelegate new];
+    id winDelegate = [[WindowDelegate alloc] init];
+    
     [MPWindow setDelegate:winDelegate];
     [winDelegate release];
     [MPWindow setTitle:appName];
     [MPWindow makeKeyAndOrderFront:nil];
     [MPWindow makeMainWindow];
+    NSDictionary* d = [[NSDictionary alloc] init];
+    
 }
 
 void FMacApplication::Finalize()

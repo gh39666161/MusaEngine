@@ -1,4 +1,4 @@
-#import "AppDelegate.h"
+#import "EditorApp/Mac/Public/AppDelegate.h"
 
 @interface AppDelegate ()
 

@@ -9,4 +9,9 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../Bin)           #设置库文件
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/../Bin) 
 #set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${PROJECT_SOURCE_DIR}/../Bin)    
 #set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/../Bin)
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Runtime")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Editor")
+
 add_subdirectory(Runtime)
+add_subdirectory(Editor)

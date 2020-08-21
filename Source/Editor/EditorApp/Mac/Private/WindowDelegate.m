@@ -1,4 +1,4 @@
-#import "WindowDelegate.h"
+#import "EditorApp/Mac/Public/WindowDelegate.h"
 
 @interface WindowDelegate ()
 

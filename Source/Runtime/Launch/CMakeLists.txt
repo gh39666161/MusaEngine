@@ -3,7 +3,11 @@ file(GLOB SOURCE_LIST "Private/*.c" "Private/*.cpp" "Private/*.m" "Private/*.mm"
 include_directories("/opt/local/include")
 source_group(Public FILES ${HEADER_LIST})
 source_group(Private FILES ${SOURCE_LIST})
-add_executable(Launch ${SOURCE_LIST} ${HEADER_LIST})
+
+
+add_executable(Launch MACOSX_BUNDLE ${SOURCE_LIST} ${HEADER_LIST})
+
 target_link_libraries(Launch Core)
 target_link_libraries(Launch Platform)
+target_link_libraries(Launch EditorApp)
 
