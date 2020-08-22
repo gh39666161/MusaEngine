@@ -3,9 +3,9 @@
 #include "Platform/Public/Application.h"
 
 ENGINE_BEGIN()
-class FMacApplication : public FApplication {
+class FOpenGLApplication : public FApplication {
 public:
-    FMacApplication();
+    FOpenGLApplication();
     int32 Initialize() override;
     void Finalize() override;
     // One cycle of the main loop
@@ -20,6 +20,6 @@ protected:
     NSWindow* MPWindow;
 };
 
-FMacApplication GMacApp;
-FApplication* GPApp = &GMacApp;
+FOpenGLApplication GOpenGLApp;
+FApplication* GPApp = &GOpenGLApp;
 ENGINE_END()

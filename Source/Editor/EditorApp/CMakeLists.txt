@@ -9,4 +9,7 @@ source_group(Mac/Private FILES ${MAC_SOURCE_LIST})
 add_library(EditorApp STATIC ${MAC_SOURCE_LIST} ${MAC_HEADER_LIST})
 
 find_library(COCOA_LIBRARY Cocoa required)
+find_library(OPENGL_LIBRARY OpenGL required)
+
 target_link_libraries(EditorApp ${COCOA_LIBRARY} dl)
+target_link_libraries(EditorApp ${OPENGL_LIBRARY} dl)

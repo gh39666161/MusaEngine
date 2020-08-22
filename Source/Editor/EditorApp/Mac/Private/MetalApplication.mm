@@ -1,19 +1,19 @@
 #import "EditorApp/Mac/Public/AppDelegate.h"
 #import "EditorApp/Mac/Public/WindowDelegate.h"
-#import "EditorApp/Mac/Public/MacApplication.h"
+#import "EditorApp/Mac/Public/MetalApplication.h"
 ENGINE_BEGIN()
-FMacApplication::FMacApplication():FApplication()
+FMetalApplication::FMetalApplication():FApplication()
 {
     
 }
 
-int32 FMacApplication::Initialize()
+int32 FMetalApplication::Initialize()
 {
     CreateMainWindow();
     return 0;
 }
 
-void FMacApplication::CreateMainWindow()
+void FMetalApplication::CreateMainWindow()
 {
     [NSApplication sharedApplication];
 
@@ -45,13 +45,13 @@ void FMacApplication::CreateMainWindow()
     
 }
 
-void FMacApplication::Finalize()
+void FMetalApplication::Finalize()
 {
     [MPWindow release];
     FApplication::Finalize();
 }
 
-void FMacApplication::Update()
+void FMetalApplication::Update()
 {
     while (NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:YES])
     {
