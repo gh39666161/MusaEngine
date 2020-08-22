@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+//#include "glad/glad.h"
 #include "Render/OpenGLRHI/Public/OpenGLRHI.h"
 
 ENGINE_BEGIN()
@@ -40,8 +41,9 @@ int32 FOpenGLRHI::Initialize()
 //
 //        InitializeShader(VS_SHADER_SOURCE_FILE, PS_SHADER_SOURCE_FILE);
 //    }
-
+//
 //    return result;
+    return 0;
 }
 void FOpenGLRHI::Finalize()
 {

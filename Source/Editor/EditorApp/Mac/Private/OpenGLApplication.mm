@@ -5,6 +5,9 @@
 #import "EditorApp/Mac/Public/OpenGLApplication.h"
 ENGINE_BEGIN()
 
+FOpenGLApplication GOpenGLApp;
+FApplication* GPApp = &GOpenGLApp;
+
 FOpenGLApplication::FOpenGLApplication():FApplication()
 {
     

@@ -13,7 +13,7 @@ FBaseRHI::~FBaseRHI()
 
 int32 FBaseRHI::Initialize()
 {
-
+    return 0;
 }
 void FBaseRHI::Finalize()
 {
