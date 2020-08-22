@@ -20,6 +20,4 @@ protected:
     NSWindow* MPWindow;
 };
 
-FOpenGLApplication GOpenGLApp;
-FApplication* GPApp = &GOpenGLApp;
 ENGINE_END()

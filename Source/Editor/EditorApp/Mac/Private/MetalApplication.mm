@@ -2,6 +2,10 @@
 #import "EditorApp/Mac/Public/WindowDelegate.h"
 #import "EditorApp/Mac/Public/MetalApplication.h"
 ENGINE_BEGIN()
+
+//FMacApplication GMacApp;
+//FApplication* GPApp = &GMacApp;
+
 FMetalApplication::FMetalApplication():FApplication()
 {
     

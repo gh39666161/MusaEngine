@@ -1,6 +1,6 @@
 #pragma once
 #include "Core/Public/Core.h"
-#include "Core/Public/RuntimeModule.h"
+#include "Core/Public/RuntimeModule.hpp"
 
 ENGINE_BEGIN()
 class FBaseRHI : public FRuntimeModule

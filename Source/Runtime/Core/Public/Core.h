@@ -1,10 +1,13 @@
-﻿#pragma once
+#pragma once
 
 // Marcos
 #define ENGINE_BEGIN() namespace Engine {
 #define ENGINE_END() };
 #define USE_ENGINE() using namespace Engine;
 #define ENGINE() Engine;
+
+#define CHECK(X) assert(X);
+#define GMODULE(MODULE) MODULE::GetModule<MODULE>()
 
 ENGINE_BEGIN()
 // Types

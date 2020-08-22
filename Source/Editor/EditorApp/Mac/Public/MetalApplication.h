@@ -19,7 +19,4 @@ protected:
 protected:
     NSWindow* MPWindow;
 };
-
-//FMacApplication GMacApp;
-//FApplication* GPApp = &GMacApp;
 ENGINE_END()
