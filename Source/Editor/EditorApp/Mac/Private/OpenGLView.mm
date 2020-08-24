@@ -1,5 +1,6 @@
+#import "Render/OpenglDevice/Public/OpenglDevice.h"
 #import "EditorApp/Mac/Public/OpenGLView.h"
-#import <OpenGL/gl.h>
+#include "Core/Public/Core.h"
 
 @implementation OpenGLView
 
@@ -53,6 +54,7 @@
                                                object:self];
 
     [_openGLContext makeCurrentContext];
+    Engine::OpenglDevice::Get()->Initialize();
 
     return self;
 }

@@ -15,17 +15,17 @@ int main(int argc, char* argv[])
         return 1;
     }
     CHECK(GMODULE(FAssetData)->Initialize() == 0);
-    CHECK(GMODULE(FOpenGLRHI)->Initialize() == 0);
+    CHECK(GMODULE(FRHI)->Initialize() == 0);
 
     while(!GPApp->IsQuit())
     {
         GPApp->Update();
         GMODULE(FAssetData)->Update();
-        GMODULE(FOpenGLRHI)->Update();
+        GMODULE(FRHI)->Update();
     }
     
     GMODULE(FAssetData)->Finalize();
-    GMODULE(FOpenGLRHI)->Finalize();
+    GMODULE(FRHI)->Finalize();
     GPApp->Finalize();
 
     return 0;

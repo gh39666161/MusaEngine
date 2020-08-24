@@ -1,10 +1,11 @@
+#import "EditorApp/Mac/Public/MetalView.h"
 #import "EditorApp/Mac/Public/AppDelegate.h"
 #import "EditorApp/Mac/Public/WindowDelegate.h"
 #import "EditorApp/Mac/Public/MetalApplication.h"
 ENGINE_BEGIN()
 
-//FMacApplication GMacApp;
-//FApplication* GPApp = &GMacApp;
+FMetalApplication GMetalApp;
+FApplication* GPApp = &GMetalApp;
 
 FMetalApplication::FMetalApplication():FApplication()
 {
@@ -14,38 +15,46 @@ FMetalApplication::FMetalApplication():FApplication()
 int32 FMetalApplication::Initialize()
 {
     CreateMainWindow();
+    MetalView* view = [[MetalView alloc] initWithFrame:CGRectMake(0, 0, 1000, 700)];
+    [MPWindow setContentView:view];
     return 0;
 }
 
 void FMetalApplication::CreateMainWindow()
 {
-    [NSApplication sharedApplication];
+    int result = 0;
+
+    [NSApplication  sharedApplication];
 
     // Menu
     NSString* appName = @"MusaEngine";
+    id menubar = [[NSMenu alloc] initWithTitle:appName];
+    id appMenuItem = [NSMenuItem new];
+    [menubar addItem: appMenuItem];
+    [NSApp setMainMenu:menubar];
+
+    id appMenu = [NSMenu new];
+    id quitMenuItem = [[NSMenuItem alloc] initWithTitle:@"Quit"
+        action:@selector(terminate:)
+        keyEquivalent:@"q"];
+    [appMenu addItem:quitMenuItem];
+    [appMenuItem setSubmenu:appMenu];
 
     id appDelegate = [AppDelegate new];
-    [NSApp setDelegate:appDelegate];
-    [appDelegate release];
+    [NSApp setDelegate: appDelegate];
     [NSApp activateIgnoringOtherApps:YES];
     [NSApp finishLaunching];
 
     NSInteger style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable |
                       NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
 
-    MPWindow = [[NSWindow alloc]
-                initWithContentRect:CGRectMake(450, 100, 500, 500)
-                  styleMask:style
-                    backing:NSBackingStoreBuffered
-                      defer:NO];
-    id winDelegate = [[WindowDelegate alloc] init];
-    
-    [MPWindow setDelegate:winDelegate];
-    [winDelegate release];
+    MPWindow = [[NSWindow alloc] initWithContentRect:CGRectMake(200, 50, 1000, 700) styleMask:style backing:NSBackingStoreBuffered defer:NO];
     [MPWindow setTitle:appName];
     [MPWindow makeKeyAndOrderFront:nil];
-    [MPWindow makeMainWindow];
-    NSDictionary* d = [[NSDictionary alloc] init];
+    id winDelegate = [WindowDelegate new];
+    [MPWindow setDelegate:winDelegate];
+
+    return result;
     
 }
 
@@ -57,92 +66,21 @@ void FMetalApplication::Finalize()
 
 void FMetalApplication::Update()
 {
-    while (NSEvent* event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSDefaultRunLoopMode dequeue:YES])
+    NSEvent *event = [NSApp nextEventMatchingMask:NSEventMaskAny
+    untilDate:nil
+    inMode:NSDefaultRunLoopMode
+    dequeue:YES];
+
+    switch([(NSEvent *)event type])
     {
-        switch ([(NSEvent*)event type]) {
-            case NSEventTypeKeyUp:
-                NSLog(@"[CocoaApp] Key Up Event Received!");
-                if ([event modifierFlags] & NSEventModifierFlagNumericPad) {
-                    // arrow keys
-//                    NSString* theArrow = [event charactersIgnoringModifiers];
-//                    unichar keyChar = 0;
-//                    if ([theArrow length] == 1) {
-//                        keyChar = [theArrow characterAtIndex:0];
-//                        if (keyChar == NSLeftArrowFunctionKey) {
-//                            g_pInputManager->LeftArrowKeyUp();
-//                            break;
-//                        }
-//                        if (keyChar == NSRightArrowFunctionKey) {
-//                            g_pInputManager->RightArrowKeyUp();
-//                            break;
-//                        }
-//                        if (keyChar == NSUpArrowFunctionKey) {
-//                            g_pInputManager->UpArrowKeyUp();
-//                            break;
-//                        }
-//                        if (keyChar == NSDownArrowFunctionKey) {
-//                            g_pInputManager->DownArrowKeyUp();
-//                            break;
-//                        }
-//                    }
-                } else {
-//                    switch ([event keyCode]) {
-//                        case kVK_ANSI_D:  // d key
-//                            InputManager::AsciiKeyUp('d');
-//                            break;
-//                        case kVK_ANSI_R:  // r key
-//                            InputManager::AsciiKeyUp('r');
-//                            break;
-//                        case kVK_ANSI_U:  // u key
-//                            InputManager::AsciiKeyUp('u');
-//                            break;
-//                    }
-                }
-                break;
-            case NSEventTypeKeyDown:
-                NSLog(@"[CocoaApp] Key Down Event Received! keycode=%d", [event keyCode]);
-                if ([event modifierFlags] & NSEventModifierFlagNumericPad) {
-                    // arrow keys
-//                    NSString* theArrow = [event charactersIgnoringModifiers];
-//                    unichar keyChar = 0;
-//                    if ([theArrow length] == 1) {
-//                        keyChar = [theArrow characterAtIndex:0];
-//                        if (keyChar == NSLeftArrowFunctionKey) {
-//                            g_pInputManager->LeftArrowKeyDown();
-//                            break;
-//                        }
-//                        if (keyChar == NSRightArrowFunctionKey) {
-//                            g_pInputManager->RightArrowKeyDown();
-//                            break;
-//                        }
-//                        if (keyChar == NSUpArrowFunctionKey) {
-//                            g_pInputManager->UpArrowKeyDown();
-//                            break;
-//                        }
-//                        if (keyChar == NSDownArrowFunctionKey) {
-//                            g_pInputManager->DownArrowKeyDown();
-//                            break;
-//                        }
-//                    }
-                } else {
-//                    switch ([event keyCode]) {
-//                        case kVK_ANSI_D:  // d key
-//                            My::InputManager::AsciiKeyDown('d');
-//                            break;
-//                        case kVK_ANSI_R:  // r key
-//                            My::InputManager::AsciiKeyDown('r');
-//                            break;
-//                        case kVK_ANSI_U:  // u key
-//                            My::InputManager::AsciiKeyDown('u');
-//                            break;
-//                    }
-                }
-                break;
-            default:
-                break;
-        }
-        [NSApp sendEvent:event];
-        [NSApp updateWindows];
+        case NSEventTypeKeyDown:
+            NSLog(@"Key Down Event Received!");
+            break;
+        default:
+            break;
     }
+    [NSApp sendEvent:event];
+    [NSApp updateWindows];
+    [event release];
 }
 ENGINE_END()
