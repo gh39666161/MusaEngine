@@ -4,10 +4,16 @@
 #define ENGINE_BEGIN() namespace Engine {
 #define ENGINE_END() };
 #define USE_ENGINE() using namespace Engine;
-#define ENGINE() Engine;
+#define ENGINE Engine;
 
 #define CHECK(X) assert(X);
 #define GMODULE(MODULE) MODULE::GetModule<MODULE>()
+
+#ifdef __OBJC__
+#define OBJC_CLASS(name) @class name
+#else
+#define OBJC_CLASS(name) typedef struct objc_object name
+#endif
 
 ENGINE_BEGIN()
 // Types

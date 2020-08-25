@@ -3,4 +3,4 @@
 #include "Core/Public/FastRecycle.h"
 #include "Platform/Public/Application.h"
 #include "AssetData/Public/AssetData.h"
-#include "Render/OpenGLRHI/Public/OpenGLRHI.h"
+#include "Render/RHI/Public/RHI.h"

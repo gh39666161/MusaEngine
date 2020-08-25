@@ -29,6 +29,10 @@ public:
     virtual void Update();
     void AddSearchPath(const std::string& Path);
     void* OpenFile(const char* Name, AssetOpenMode Mode);
+    FBuffer SyncOpenAndReadText(const char *FilePath);
+    std::string SyncOpenAndReadTextFileToString(const char* fileName);
+    uint64 GetSize(void* FP);
+    void CloseFile(void* FP);
 private:
     std::vector<std::string> MSearchPaths;
 };

@@ -13,6 +13,8 @@ public:
     FBuffer(uint64 Size);
     FBuffer(const FBuffer& Other);
     virtual ~FBuffer();
+    uint8* GetData();
+    uint64 GetSize();
 private:
     uint8* MData;
     uint64 MSize;

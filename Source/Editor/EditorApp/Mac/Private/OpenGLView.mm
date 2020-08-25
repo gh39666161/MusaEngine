@@ -1,5 +1,6 @@
+#import "Render/OpenglRHI/Public/OpenglRHI.h"
 #import "EditorApp/Mac/Public/OpenGLView.h"
-#import <OpenGL/gl.h>
+#include "Core/Public/Core.h"
 
 @implementation OpenGLView
 

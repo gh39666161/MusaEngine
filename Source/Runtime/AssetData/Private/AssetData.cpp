@@ -53,4 +53,57 @@ void* FAssetData::OpenFile(const char* Name, AssetOpenMode Mode)
     return FP;
 }
 
+FBuffer FAssetData::SyncOpenAndReadText(const char *FilePath)
+{
+    void* FP = OpenFile(FilePath, MY_OPEN_TEXT);
+    FBuffer* Buffer = nullptr;
+
+    if (FP) {
+        uint64 length = GetSize(FP);
+
+        Buffer = new FBuffer(length + 1);
+        auto Data = Buffer->GetData();
+        length = fread(Data, 1, length, static_cast<FILE*>(FP));
+        Data[length] = '\0';
+
+        CloseFile(FP);
+    } else {
+        Buffer = new FBuffer();
+    }
+
+    return *Buffer;
+}
+
+std::string FAssetData::SyncOpenAndReadTextFileToString(const char* fileName)
+{
+    std::string result;
+    FBuffer buffer = SyncOpenAndReadText(fileName);
+    char* content = reinterpret_cast<char*>(buffer.GetData());
+
+    if (content)
+    {
+        result = std::string(std::move(content));
+    }
+
+    return result;
+}
+
+uint64 FAssetData::GetSize(void* FP)
+{
+    FILE* _fp = static_cast<FILE*>(FP);
+
+    long pos = ftell(_fp);
+    fseek(_fp, 0, SEEK_END);
+    size_t length = ftell(_fp);
+    fseek(_fp, pos, SEEK_SET);
+
+    return length;
+}
+
+void FAssetData::CloseFile(void* FP)
+{
+    fclose((FILE*)FP);
+    FP = nullptr;
+}
+
 ENGINE_END()

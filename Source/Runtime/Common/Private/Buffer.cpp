@@ -33,4 +33,13 @@ FBuffer::~FBuffer()
     MData = nullptr;
     MSize = 0;
 }
+
+uint8* FBuffer::GetData()
+{
+    return MData;
+}
+uint64 FBuffer::GetSize()
+{
+    return MSize;
+}
 ENGINE_END()

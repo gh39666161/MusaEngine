@@ -6,5 +6,5 @@
     @private
     NSOpenGLContext* _openGLContext;
     NSOpenGLPixelFormat* _pixelFormat;
-}
+};
 @end
