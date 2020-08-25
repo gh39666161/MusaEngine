@@ -1,6 +1,5 @@
 #include "AssetData/Public/AssetData.h"
-#include "Render/OpenglDevice/Public/OpenglDevice.h"
-#include "Render/MetalDevice/Public/MetalDevice.h"
+#include "Render/MetalRHI/Public/MetalRHI.h"
 #include "Render/RHI/Public/RHI.h"
 
 ENGINE_BEGIN()
@@ -22,8 +21,8 @@ FRHI::~FRHI()
 
 int32 FRHI::Initialize()
 {
-    MVertexShader = CompileShader(VS_SHADER_SOURCE_FILE, ShaderType::Vertex);
-    MFragmentShader = CompileShader(PS_SHADER_SOURCE_FILE, ShaderType::Fragment);
+    MVertexShader = CompileShader(VS_SHADER_SOURCE_FILE, RHIShaderType::Vertex);
+    MFragmentShader = CompileShader(PS_SHADER_SOURCE_FILE, RHIShaderType::Fragment);
     return 0;
 }
 
@@ -34,10 +33,10 @@ void FRHI::Finalize()
 
 void FRHI::Update()
 {
-    MetalDevice::Get()->Draw(MVertexShader, MFragmentShader);
+    GMODULE(FMetalRHI)->DrawDebug(MVertexShader, MFragmentShader);
 }
 
-uint32 FRHI::CompileShader(const std::string& File, ShaderType CompileShaderType)
+uint32 FRHI::CompileShader(const std::string& File, RHIShaderType CompileShaderType)
 {
     // Load the vertex shader source file into a text buffer.
     const std::string Source = GMODULE(FAssetData)->SyncOpenAndReadTextFileToString(File.c_str());
@@ -46,7 +45,7 @@ uint32 FRHI::CompileShader(const std::string& File, ShaderType CompileShaderType
         return 0;
     }
     
-    return MetalDevice::Get()->CompileShader(Source, CompileShaderType);
+    return GMODULE(FMetalRHI)->CompileShader(Source, CompileShaderType);
 }
 
 ENGINE_END()

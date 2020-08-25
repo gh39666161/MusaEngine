@@ -1,4 +1,4 @@
-#import "Render/MetalDevice/Public/MetalDevice.h"
+#import "Render/MetalRHI/Public/MetalRenderer.h"
 #import "EditorApp/Mac/Public/MetalView.h"
 
 @implementation MetalView
@@ -37,7 +37,7 @@
     self.paused = YES;
     self.enableSetNeedsDisplay = YES;
 
-    Engine::MetalDevice::Get()->Initialize(static_cast<MetalView*>(self));
+    [[MetalRenderer alloc] initWithMetalKitView:self device:self.device];
 }
 
 - (void)drawRect:(CGRect)drawRect {

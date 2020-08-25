@@ -1,4 +1,4 @@
-#import "Render/OpenglDevice/Public/OpenglDevice.h"
+#import "Render/OpenglRHI/Public/OpenglDevice.h"
 #import "EditorApp/Mac/Public/OpenGLView.h"
 #include "Core/Public/Core.h"
 

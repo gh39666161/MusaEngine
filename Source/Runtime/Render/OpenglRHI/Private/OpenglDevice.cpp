@@ -3,7 +3,7 @@
 #import <OpenGL/gl3.h>
 #import <OpenGL/glu.h>
 #include "Render/RHI/Public/RHI.h"
-#include "Render/OpenglDevice/Public/OpenglDevice.h"
+#include "Render/OpenglRHI/Public/OpenglDevice.h"
 
 ENGINE_BEGIN()
 
