@@ -3,7 +3,7 @@
 #import <OpenGL/gl3.h>
 #import <OpenGL/glu.h>
 #include "Render/RHI/Public/RHI.h"
-#include "Render/OpenglRHI/Public/OpenglDevice.h"
+#include "Render/OpenglRHI/Public/OpenglRHI.h"
 
 ENGINE_BEGIN()
 
@@ -14,17 +14,17 @@ enum {
     NUM_ATTRIBUTES
 };
 
-OpenglDevice::OpenglDevice()
+FOpenglRHI::FOpenglRHI()
 {
     
 }
 
-OpenglDevice::~OpenglDevice()
+FOpenglRHI::~FOpenglRHI()
 {
 
 }
 
-void OpenglDevice::Initialize()
+int32 FOpenglRHI::Initialize()
 {
 //    MContext = Context;
 //    int result = gladLoadGL();
@@ -57,7 +57,16 @@ void OpenglDevice::Initialize()
     //return 0;
 }
 
-uint32 OpenglDevice::CompileShader(const std::string& Vertext, const std::string& Fragment)
+void FOpenglRHI::Finalize()
+{
+    
+}
+void FOpenglRHI::Update()
+{
+    
+}
+
+uint32 FOpenglRHI::CompileShader(const std::string& Vertext, const std::string& Fragment)
 {
     int status;
     // Create a vertex and fragment shader object.
@@ -118,13 +127,7 @@ uint32 OpenglDevice::CompileShader(const std::string& Vertext, const std::string
     return ShaderProgram;
 }
 
-OpenglDevice* OpenglDevice::Get()
-{
-    static OpenglDevice* OpenglDeviceInst = new OpenglDevice();
-    return OpenglDeviceInst;
-}
-
-void OpenglDevice::Draw(uint32 shader)
+void FOpenglRHI::Draw(uint32 shader)
 {
     glUseProgram(shader);
     static const GLfloat squareVertices[] = {

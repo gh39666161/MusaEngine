@@ -1,4 +1,4 @@
-#import "Render/OpenglRHI/Public/OpenglDevice.h"
+#import "Render/OpenglRHI/Public/OpenglRHI.h"
 #import "EditorApp/Mac/Public/OpenGLView.h"
 #include "Core/Public/Core.h"
 
@@ -54,7 +54,6 @@
                                                object:self];
 
     [_openGLContext makeCurrentContext];
-    Engine::OpenglDevice::Get()->Initialize();
 
     return self;
 }
