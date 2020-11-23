@@ -1,9 +1,10 @@
 #include "Core/Public/FastRecycle.h"
-ENGINE_BEGIN()
 
-FastRecycle::~FastRecycle()
+namespace MusaEngine
 {
-    
+    FastRecycle::~FastRecycle()
+    {
+        
+    }
 }
 
-ENGINE_END()

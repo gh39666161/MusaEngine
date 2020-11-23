@@ -1,10 +1,19 @@
 #import "Render/MetalRHI/Public/MetalRHI.h"
 #import "Render/MetalRHI/Public/MetalRenderer.h"
-USE_ENGINE()
+using namespace MusaEngine;
 
 @implementation MetalRenderer
 {
     
+}
+
+- (void) dealloc
+{
+    [_mtkView release];
+    [_device release];
+    [_commandQueue release];
+    [_shaders release];
+    [super dealloc];
 }
 
 - (nonnull instancetype)initWithMetalKitView:(nonnull MTKView*) mtkView
@@ -25,37 +34,30 @@ USE_ENGINE()
     return self;
 }
 
-- (uint32_t)compileVertexShader:(nonnull NSString*) source
+- (NSInteger)compileShader:(nonnull NSString*) source functionName: (nonnull NSString*) name;
 {
     NSError *error = nil;
 //        NSString* NsSource = [NSString stringWithCString:Source.c_str() encoding:[NSString defaultCStringEncoding]];
-    id<MTLLibrary> Library = [_device newLibraryWithSource: source options: nil error:&error];
-    if (Library == nullptr)
+    id<MTLLibrary> library = [_device newLibraryWithSource: source options: nil error:&error];
+    if (library == nullptr)
     {
         NSLog(@"Library error: %@", error);
     }
 
-    id<MTLFunction> Function = [Library newFunctionWithName:@"MainVS"];
-    [_shaders addObject:Function];
-    return [_shaders count] - 1;
-}
-
-- (NSUInteger)compileShader:(nonnull NSString*) source functionName: (nonnull NSString*) name;
-{
-    NSError *error = nil;
-//        NSString* NsSource = [NSString stringWithCString:Source.c_str() encoding:[NSString defaultCStringEncoding]];
-    id<MTLLibrary> Library = [_device newLibraryWithSource: source options: nil error:&error];
-    if (Library == nullptr)
+    id<MTLFunction> function = [library newFunctionWithName:name];
+    [library release];
+    
+    if (function != nil)
     {
-        NSLog(@"Library error: %@", error);
+        [_shaders addObject:function];
+        [function release];
+        
+        return [_shaders count] - 1;
     }
-
-    id<MTLFunction> Function = [Library newFunctionWithName:name];
-    [_shaders addObject:Function];
-    return [_shaders count] - 1;
+    return IDX_NONE;
 }
 
-- (id<MTLFunction>) getShader:(NSUInteger) shaderIndex
+- (id<MTLFunction>) getShader:(NSInteger) shaderIndex
 {
     if ([_shaders count] <= shaderIndex)
     {
@@ -64,7 +66,7 @@ USE_ENGINE()
     return _shaders[shaderIndex];
 }
 
-- (void) drawDebug:(NSUInteger) vertexShaderIndex Fragment:(NSUInteger) fragmentShaderIndex
+- (void) drawDebug:(NSInteger) vertexShaderIndex Fragment:(NSInteger) fragmentShaderIndex
 {
     id<MTLFunction> vertexFunction = [self getShader:vertexShaderIndex];
     id<MTLFunction> fragmentFunction = [self getShader:fragmentShaderIndex];

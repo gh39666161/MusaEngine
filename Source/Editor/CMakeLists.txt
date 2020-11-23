@@ -1,3 +1,3 @@
-add_subdirectory(EditorApp)
+ADD_SUBDIRECTORY(EditorApp)
 
 SET_PROPERTY(TARGET EditorApp PROPERTY FOLDER "Editor")

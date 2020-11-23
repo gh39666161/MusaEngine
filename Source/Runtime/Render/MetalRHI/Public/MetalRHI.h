@@ -5,21 +5,21 @@
 #include "Core/Public/RuntimeModule.hpp"
 
 OBJC_CLASS(MetalRenderer);
-ENGINE_BEGIN()
-
-class FMetalRHI : public FRuntimeModule
+namespace MusaEngine
 {
-public:
-    FMetalRHI();
-    virtual ~FMetalRHI();
-    int32 Initialize() override;
-    void Finalize() override;
-    void Update() override;
-    
-    void SetMetalRenderer(MetalRenderer* Renderer);
-    uint32 CompileShader(const std::string& Source, RHIShaderType CompileShaderType);
-    void DrawDebug(uint32 VertexShaderIndex, uint32 FragmentShaderIndex);
-private:
-    MetalRenderer* MMetalRenderer;
-};
-ENGINE_END()
+    class FMetalRHI : public FRuntimeModule
+    {
+    public:
+        FMetalRHI();
+        virtual ~FMetalRHI();
+        int32 Initialize() override;
+        void Finalize() override;
+        void Update() override;
+        
+        void SetMetalRenderer(MetalRenderer* Renderer);
+        int32 CompileShader(const std::string& Source, RHIShaderType CompileShaderType);
+        void DrawDebug(int32 VertexShaderIndex, int32 FragmentShaderIndex);
+    private:
+        MetalRenderer* MMetalRenderer;
+    };
+}

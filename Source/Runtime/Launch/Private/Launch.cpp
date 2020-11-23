@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include "Core/Public/Engine.h"
 #include "Launch/Public/Launch.h"
-USE_ENGINE()
+using namespace MusaEngine;
 
-ENGINE_BEGIN()
-extern FApplication* GPApp;
-ENGINE_END()
+namespace MusaEngine
+{
+    extern FApplication* GPApp;
+}
 
 int main(int argc, char* argv[])
 {
