@@ -1,7 +1,9 @@
-#import "Render/MetalRHI/Public/MetalRenderer.h"
 #import "EditorApp/Mac/Public/MetalView.h"
 
 @implementation MetalView
+{
+    
+}
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
     if (self = [super initWithCoder:coder]) {
@@ -27,8 +29,17 @@
     return self;
 }
 
+- (void) dealloc
+{
+    [_metalRenderer release];
+    [super dealloc];
+}
+
 - (void)configure {
-    self.device = MTLCreateSystemDefaultDevice();
+    id<MTLDevice> device = MTLCreateSystemDefaultDevice();
+    self.device = device;
+    [device release];
+    
     self.colorPixelFormat = MTLPixelFormatBGRA8Unorm;
     self.depthStencilPixelFormat = MTLPixelFormatDepth32Float;
     self.framebufferOnly = YES;
@@ -37,7 +48,8 @@
     self.paused = YES;
     self.enableSetNeedsDisplay = YES;
 
-    [[MetalRenderer alloc] initWithMetalKitView:self device:self.device];
+    _metalRenderer = [[MetalRenderer alloc] initWithMetalKitView:self device:self.device];
+    
 }
 
 - (void)drawRect:(CGRect)drawRect {

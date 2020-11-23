@@ -1,11 +1,11 @@
 #pragma once
 #include "Core/Public/Core.h"
-ENGINE_BEGIN()
 
-enum RHIShaderType
+namespace MusaEngine
 {
-    Vertex,
-    Fragment
-};
-
-ENGINE_END()
+    enum RHIShaderType
+    {
+        Vertex,
+        Fragment
+    };
+}
