@@ -7,13 +7,13 @@
 
 namespace MusaEngine
 {
-    class FBuffer : public FastRecycle
+    class CBuffer : public CFastRecycle
     {
     public:
-        FBuffer();
-        FBuffer(uint64 Size);
-        FBuffer(const FBuffer& Other);
-        virtual ~FBuffer();
+        CBuffer();
+        CBuffer(uint64 Size);
+        CBuffer(const CBuffer& Other);
+        virtual ~CBuffer();
         uint8* GetData();
         uint64 GetSize();
     private:

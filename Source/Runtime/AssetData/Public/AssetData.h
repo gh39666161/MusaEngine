@@ -8,7 +8,7 @@
 
 namespace MusaEngine
 {
-    class FAssetData : public FRuntimeModule
+    class CAssetData : public CRuntimeModule
     {
     public:
         enum AssetOpenMode {
@@ -23,14 +23,14 @@ namespace MusaEngine
         };
         
     public:
-        FAssetData();
-        virtual ~FAssetData();
+        CAssetData();
+        virtual ~CAssetData();
         virtual int32 Initialize();
         virtual void Finalize();
         virtual void Update();
         void AddSearchPath(const std::string& Path);
         void* OpenFile(const char* Name, AssetOpenMode Mode);
-        FBuffer SyncOpenAndReadText(const char *FilePath);
+        CBuffer SyncOpenAndReadText(const char *FilePath);
         std::string SyncOpenAndReadTextFileToString(const char* fileName);
         uint64 GetSize(void* FP);
         void CloseFile(void* FP);

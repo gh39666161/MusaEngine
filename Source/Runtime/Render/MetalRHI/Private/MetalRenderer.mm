@@ -25,7 +25,7 @@ using namespace MusaEngine;
         return nil;
     }
     
-    GMODULE(FMetalRHI)->SetMetalRenderer(self);
+    GMODULE(CMetalRHI)->SetMetalRenderer(self);
     _shaders = [[NSMutableArray<id<MTLFunction>> alloc] init];
     _mtkView = mtkView;
     _device = device;

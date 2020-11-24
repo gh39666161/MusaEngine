@@ -4,9 +4,9 @@
 
 namespace MusaEngine
 {
-    class FMetalApplication : public FApplication {
+    class CMetalApplication : public CApplication {
     public:
-        FMetalApplication();
+        CMetalApplication();
         int32 Initialize() override;
         void Finalize() override;
         // One cycle of the main loop

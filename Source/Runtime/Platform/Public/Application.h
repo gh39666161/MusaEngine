@@ -4,10 +4,10 @@
 
 namespace MusaEngine
 {
-    class FApplication : public FRuntimeModule
+    class CApplication : public CRuntimeModule
     {
     public:
-        FApplication();
+        CApplication();
         virtual int32 Initialize();
         virtual void Finalize();
         virtual void Update();

@@ -1,15 +1,15 @@
 #pragma once
 #include <string>
-#import <OpenGL/gl.h>
+//#import <OpenGL/gl.h>
 #include "Core/Public/RuntimeModule.hpp"
 
 namespace MusaEngine
 {
-    class FOpenglRHI : public FRuntimeModule
+    class COpenglRHI : public CRuntimeModule
     {
     public:
-        FOpenglRHI();
-        virtual ~FOpenglRHI();
+        COpenglRHI();
+        virtual ~COpenglRHI();
         int32 Initialize() override;
         void Finalize() override;
         void Update() override;

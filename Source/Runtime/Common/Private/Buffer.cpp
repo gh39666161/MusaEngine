@@ -5,41 +5,41 @@ namespace MusaEngine
     extern "C" void* malloc(size_t size);
     extern "C" void  free(void* p);
 
-    FBuffer::FBuffer():
+    CBuffer::CBuffer():
     MData(nullptr),
     MSize(0)
     {
         
     }
 
-    FBuffer::FBuffer(uint64 Size):
+    CBuffer::CBuffer(uint64 Size):
     MSize(Size)
     {
         MData = reinterpret_cast<uint8*>(malloc(Size));
     }
 
-    FBuffer::FBuffer(const FBuffer& Other)
+    CBuffer::CBuffer(const CBuffer& Other)
     {
         MData = reinterpret_cast<uint8*>(malloc(Other.MSize));
         memcpy(MData, Other.MData, Other.MSize);
         MSize = Other.MSize;
     }
 
-    FBuffer::~FBuffer()
+    CBuffer::~CBuffer()
     {
         if (MData)
         {
             free(MData);
         }
         MData = nullptr;
-        MSize = 0;
+        MData = 0;
     }
 
-    uint8* FBuffer::GetData()
+    uint8* CBuffer::GetData()
     {
         return MData;
     }
-    uint64 FBuffer::GetSize()
+    uint64 CBuffer::GetSize()
     {
         return MSize;
     }
