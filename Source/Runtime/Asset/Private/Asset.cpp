@@ -1,37 +1,37 @@
-#include "AssetData/Public/AssetData.h"
+#include "Asset/Public/Asset.h"
 
 namespace MusaEngine
 {
-    CAssetData::CAssetData()
+    CAsset::CAsset()
     {
 
     }
 
-    CAssetData::~CAssetData()
+    CAsset::~CAsset()
     {
 
     }
 
-    int32 CAssetData::Initialize()
+    int32 CAsset::Initialize()
     {
         AddSearchPath("../../");
         return 0;
     }
-    void CAssetData::Finalize()
+    void CAsset::Finalize()
     {
 
     }
-    void CAssetData::Update()
+    void CAsset::Update()
     {
 
     }
 
-    void CAssetData::AddSearchPath(const std::string& Path)
+    void CAsset::AddSearchPath(const std::string& Path)
     {
         MSearchPaths.push_back(Path);
     }
 
-    void* CAssetData::OpenFile(const char* Name, AssetOpenMode Mode)
+    void* CAsset::OpenFile(const char* Name, AssetOpenMode Mode)
     {
         FILE *FP = nullptr;
         for (auto SearchPath : MSearchPaths)
@@ -54,7 +54,7 @@ namespace MusaEngine
         return FP;
     }
 
-    CBuffer CAssetData::SyncOpenAndReadText(const char *FilePath)
+    CBuffer CAsset::SyncOpenAndReadText(const char *FilePath)
     {
         void* FP = OpenFile(FilePath, MY_OPEN_TEXT);
         CBuffer* Buffer = nullptr;
@@ -75,7 +75,7 @@ namespace MusaEngine
         return *Buffer;
     }
 
-    std::string CAssetData::SyncOpenAndReadTextFileToString(const char* fileName)
+    std::string CAsset::SyncOpenAndReadTextFileToString(const char* fileName)
     {
         std::string Result;
         CBuffer Buffer = SyncOpenAndReadText(fileName);
@@ -89,7 +89,7 @@ namespace MusaEngine
         return Result;
     }
 
-    uint64 CAssetData::GetSize(void* FP)
+    uint64 CAsset::GetSize(void* FP)
     {
         FILE* _fp = static_cast<FILE*>(FP);
 
@@ -101,7 +101,7 @@ namespace MusaEngine
         return length;
     }
 
-    void CAssetData::CloseFile(void* FP)
+    void CAsset::CloseFile(void* FP)
     {
         fclose((FILE*)FP);
         FP = nullptr;

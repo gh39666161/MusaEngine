@@ -1,4 +1,4 @@
-#include "AssetData/Public/AssetData.h"
+#include "Asset/Public/Asset.h"
 #include "Render/MetalRHI/Public/MetalRHI.h"
 #include "Render/RHI/Public/RHI.h"
 
@@ -40,7 +40,7 @@ namespace MusaEngine
     uint32 CRHI::CompileShader(const std::string& File, RHIShaderType CompileShaderType)
     {
         // Load the vertex shader source file into a text buffer.
-        const std::string Source = GMODULE(CAssetData)->SyncOpenAndReadTextFileToString(File.c_str());
+        const std::string Source = GMODULE(CAsset)->SyncOpenAndReadTextFileToString(File.c_str());
         if(Source.empty())
         {
             return 0;

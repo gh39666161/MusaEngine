@@ -15,17 +15,17 @@ int main(int argc, char* argv[])
         printf("App Initialize failed, will exit now.");
         return 1;
     }
-    CHECK(GMODULE(CAssetData)->Initialize() == 0);
+    CHECK(GMODULE(CAsset)->Initialize() == 0);
     CHECK(GMODULE(CRHI)->Initialize() == 0);
 
     while(!GPApp->IsQuit())
     {
         GPApp->Update();
-        GMODULE(CAssetData)->Update();
+        GMODULE(CAsset)->Update();
         GMODULE(CRHI)->Update();
     }
     
-    GMODULE(CAssetData)->Finalize();
+    GMODULE(CAsset)->Finalize();
     GMODULE(CRHI)->Finalize();
     GPApp->Finalize();
 

@@ -11,7 +11,7 @@ set_target_properties(Launch PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${PROJECT_SOURC
 
 target_link_libraries(Launch Core)
 target_link_libraries(Launch Common)
-target_link_libraries(Launch AssetData)
+target_link_libraries(Launch Asset)
 target_link_libraries(Launch Platform)
 target_link_libraries(Launch EditorApp)
 target_link_libraries(Launch Render)
