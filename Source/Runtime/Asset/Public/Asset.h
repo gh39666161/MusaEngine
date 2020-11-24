@@ -8,7 +8,7 @@
 
 namespace MusaEngine
 {
-    class CAssetData : public CRuntimeModule
+    class CAsset : public CRuntimeModule
     {
     public:
         enum AssetOpenMode {
@@ -23,8 +23,8 @@ namespace MusaEngine
         };
         
     public:
-        CAssetData();
-        virtual ~CAssetData();
+        CAsset();
+        virtual ~CAsset();
         virtual int32 Initialize();
         virtual void Finalize();
         virtual void Update();

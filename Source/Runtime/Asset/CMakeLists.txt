@@ -3,4 +3,4 @@ file(GLOB SOURCE_LIST "Private/*.c" "Private/*.cpp" "Private/*.m" "Private/*.mm"
 source_group(Public FILES ${HEADER_LIST})
 source_group(Private FILES ${SOURCE_LIST})
 
-ADD_LIBRARY(AssetData STATIC ${SOURCE_LIST} ${HEADER_LIST})
+ADD_LIBRARY(Asset STATIC ${SOURCE_LIST} ${HEADER_LIST})
