@@ -3,11 +3,11 @@
 
 namespace MusaEngine
 {
-    class FRuntimeModule : public FastRecycle
+    class CRuntimeModule : public CFastRecycle
     {
         
     public:
-        virtual ~FRuntimeModule() {};
+        virtual ~CRuntimeModule() {};
         virtual int32 Initialize() = 0;
         virtual void Finalize() = 0;
         virtual void Update() = 0;

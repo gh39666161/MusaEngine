@@ -3,36 +3,36 @@
 
 namespace MusaEngine
 {
-    FMetalRHI::FMetalRHI()
+    CMetalRHI::CMetalRHI()
     {
         
     }
 
-    FMetalRHI::~FMetalRHI()
+    CMetalRHI::~CMetalRHI()
     {
 
     }
 
-    int32 FMetalRHI::Initialize()
+    int32 CMetalRHI::Initialize()
     {
         return 0;
     }
 
-    void FMetalRHI::Finalize()
+    void CMetalRHI::Finalize()
     {
 
     }
 
-    void FMetalRHI::Update()
+    void CMetalRHI::Update()
     {
     }
 
-    void FMetalRHI::SetMetalRenderer(MetalRenderer* Renderer)
+    void CMetalRHI::SetMetalRenderer(MetalRenderer* Renderer)
     {
         MMetalRenderer = Renderer;
     }
 
-    int32 FMetalRHI::CompileShader(const std::string& Source,  RHIShaderType CompileShaderType)
+    int32 CMetalRHI::CompileShader(const std::string& Source,  RHIShaderType CompileShaderType)
     {
         NSString* ShaderSource = [NSString stringWithCString:Source.c_str() encoding:[NSString defaultCStringEncoding]];
         if (CompileShaderType == RHIShaderType::Vertex)
@@ -46,7 +46,7 @@ namespace MusaEngine
         return IDX_NONE;
     }
 
-    void FMetalRHI::DrawDebug(int32 VertexShaderIndex, int32 FragmentShaderIndex)
+    void CMetalRHI::DrawDebug(int32 VertexShaderIndex, int32 FragmentShaderIndex)
     {
         [MMetalRenderer drawDebug:VertexShaderIndex Fragment:FragmentShaderIndex];
     }

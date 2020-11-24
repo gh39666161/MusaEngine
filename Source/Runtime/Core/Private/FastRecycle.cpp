@@ -2,7 +2,7 @@
 
 namespace MusaEngine
 {
-    FastRecycle::~FastRecycle()
+    CFastRecycle::~CFastRecycle()
     {
         
     }

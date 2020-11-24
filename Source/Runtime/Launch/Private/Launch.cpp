@@ -5,7 +5,7 @@ using namespace MusaEngine;
 
 namespace MusaEngine
 {
-    extern FApplication* GPApp;
+    extern CApplication* GPApp;
 }
 
 int main(int argc, char* argv[])
@@ -15,18 +15,18 @@ int main(int argc, char* argv[])
         printf("App Initialize failed, will exit now.");
         return 1;
     }
-    CHECK(GMODULE(FAssetData)->Initialize() == 0);
-    CHECK(GMODULE(FRHI)->Initialize() == 0);
+    CHECK(GMODULE(CAssetData)->Initialize() == 0);
+    CHECK(GMODULE(CRHI)->Initialize() == 0);
 
     while(!GPApp->IsQuit())
     {
         GPApp->Update();
-        GMODULE(FAssetData)->Update();
-        GMODULE(FRHI)->Update();
+        GMODULE(CAssetData)->Update();
+        GMODULE(CRHI)->Update();
     }
     
-    GMODULE(FAssetData)->Finalize();
-    GMODULE(FRHI)->Finalize();
+    GMODULE(CAssetData)->Finalize();
+    GMODULE(CRHI)->Finalize();
     GPApp->Finalize();
 
     return 0;

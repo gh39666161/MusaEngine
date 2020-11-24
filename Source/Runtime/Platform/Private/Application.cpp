@@ -2,24 +2,24 @@
 
 namespace MusaEngine
 {
-    FApplication::FApplication():MBQuit(false)
+    CApplication::CApplication():MBQuit(false)
     {
 
     }
 
-    int32 FApplication::Initialize()
+    int32 CApplication::Initialize()
     {
         return 0;
     }
-    void FApplication::Finalize()
+    void CApplication::Finalize()
     {
 
     }
-    void FApplication::Update()
+    void CApplication::Update()
     {
 
     }
-    bool FApplication::IsQuit()
+    bool CApplication::IsQuit()
     {
 
     }

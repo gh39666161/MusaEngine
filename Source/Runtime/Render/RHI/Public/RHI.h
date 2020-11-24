@@ -6,11 +6,11 @@
 
 namespace MusaEngine
 {
-    class FRHI : public FRuntimeModule
+    class CRHI : public CRuntimeModule
     {
     public:
-        FRHI();
-        virtual ~FRHI();
+        CRHI();
+        virtual ~CRHI();
         int32 Initialize() override;
         void Finalize() override;
         void Update() override;

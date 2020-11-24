@@ -7,7 +7,7 @@ namespace MusaEngine
     const std::string VS_SHADER_SOURCE_FILE = "Shader/colorvs.metal";
     const std::string PS_SHADER_SOURCE_FILE = "Shader/colorps.metal";
 
-    FRHI::FRHI():
+    CRHI::CRHI():
     MUseOpengl(true),
     MVertexShader(0),
     MFragmentShader(0)
@@ -15,37 +15,37 @@ namespace MusaEngine
 
     }
 
-    FRHI::~FRHI()
+    CRHI::~CRHI()
     {
 
     }
 
-    int32 FRHI::Initialize()
+    int32 CRHI::Initialize()
     {
         MVertexShader = CompileShader(VS_SHADER_SOURCE_FILE, RHIShaderType::Vertex);
         MFragmentShader = CompileShader(PS_SHADER_SOURCE_FILE, RHIShaderType::Fragment);
         return 0;
     }
 
-    void FRHI::Finalize()
+    void CRHI::Finalize()
     {
 
     }
 
-    void FRHI::Update()
+    void CRHI::Update()
     {
-        GMODULE(FMetalRHI)->DrawDebug(MVertexShader, MFragmentShader);
+        GMODULE(CMetalRHI)->DrawDebug(MVertexShader, MFragmentShader);
     }
 
-    uint32 FRHI::CompileShader(const std::string& File, RHIShaderType CompileShaderType)
+    uint32 CRHI::CompileShader(const std::string& File, RHIShaderType CompileShaderType)
     {
         // Load the vertex shader source file into a text buffer.
-        const std::string Source = GMODULE(FAssetData)->SyncOpenAndReadTextFileToString(File.c_str());
+        const std::string Source = GMODULE(CAssetData)->SyncOpenAndReadTextFileToString(File.c_str());
         if(Source.empty())
         {
             return 0;
         }
         
-        return GMODULE(FMetalRHI)->CompileShader(Source, CompileShaderType);
+        return GMODULE(CMetalRHI)->CompileShader(Source, CompileShaderType);
     }
 }

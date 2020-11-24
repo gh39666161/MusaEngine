@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #import <OpenGL/gl3.h>
-#import <OpenGL/glu.h>
+//#import <OpenGL/glu.h>
 #include "Render/RHI/Public/RHI.h"
 #include "Render/OpenglRHI/Public/OpenglRHI.h"
 
@@ -14,17 +14,17 @@ namespace MusaEngine
         NUM_ATTRIBUTES
     };
 
-    FOpenglRHI::FOpenglRHI()
+    COpenglRHI::COpenglRHI()
     {
         
     }
 
-    FOpenglRHI::~FOpenglRHI()
+    COpenglRHI::~COpenglRHI()
     {
 
     }
 
-    int32 FOpenglRHI::Initialize()
+    int32 COpenglRHI::Initialize()
     {
     //    MContext = Context;
     //    int result = gladLoadGL();
@@ -57,16 +57,16 @@ namespace MusaEngine
         //return 0;
     }
 
-    void FOpenglRHI::Finalize()
+    void COpenglRHI::Finalize()
     {
         
     }
-    void FOpenglRHI::Update()
+    void COpenglRHI::Update()
     {
         
     }
 
-    uint32 FOpenglRHI::CompileShader(const std::string& Vertext, const std::string& Fragment)
+    uint32 COpenglRHI::CompileShader(const std::string& Vertext, const std::string& Fragment)
     {
         int status;
         // Create a vertex and fragment shader object.
@@ -127,7 +127,7 @@ namespace MusaEngine
         return ShaderProgram;
     }
 
-    void FOpenglRHI::Draw(uint32 shader)
+    void COpenglRHI::Draw(uint32 shader)
     {
         glUseProgram(shader);
         static const GLfloat squareVertices[] = {

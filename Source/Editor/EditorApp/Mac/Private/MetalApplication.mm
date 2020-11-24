@@ -5,15 +5,15 @@
 
 namespace MusaEngine
 {
-    FMetalApplication GMetalApp;
-    FApplication* GPApp = &GMetalApp;
+    CMetalApplication GMetalApp;
+    CMetalApplication* GPApp = &GMetalApp;
 
-    FMetalApplication::FMetalApplication():FApplication()
+    CMetalApplication::CMetalApplication():CApplication()
     {
         
     }
 
-    int32 FMetalApplication::Initialize()
+    int32 CMetalApplication::Initialize()
     {
         CreateMainWindow();
         MetalView* view = [[MetalView alloc] initWithFrame:CGRectMake(0, 0, 1000, 700)];
@@ -22,7 +22,7 @@ namespace MusaEngine
         return 0;
     }
 
-    void FMetalApplication::CreateMainWindow()
+    void CMetalApplication::CreateMainWindow()
     {
         int result = 0;
 
@@ -66,13 +66,13 @@ namespace MusaEngine
         
     }
 
-    void FMetalApplication::Finalize()
+    void CMetalApplication::Finalize()
     {
         [MPWindow release];
-        FApplication::Finalize();
+        CApplication::Finalize();
     }
 
-    void FMetalApplication::Update()
+    void CMetalApplication::Update()
     {
         NSEvent *event = [NSApp nextEventMatchingMask:NSEventMaskAny
         untilDate:nil

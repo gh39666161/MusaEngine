@@ -2,9 +2,9 @@
 #include "Core/Public/Core.h"
 namespace MusaEngine
 {
-    class FastRecycle
+    class CFastRecycle
     {
     public:
-        virtual ~FastRecycle();
+        virtual ~CFastRecycle();
     };
 }

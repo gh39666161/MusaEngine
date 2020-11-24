@@ -7,11 +7,11 @@
 OBJC_CLASS(MetalRenderer);
 namespace MusaEngine
 {
-    class FMetalRHI : public FRuntimeModule
+    class CMetalRHI : public CRuntimeModule
     {
     public:
-        FMetalRHI();
-        virtual ~FMetalRHI();
+        CMetalRHI();
+        virtual ~CMetalRHI();
         int32 Initialize() override;
         void Finalize() override;
         void Update() override;

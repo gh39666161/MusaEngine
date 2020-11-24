@@ -2,36 +2,36 @@
 
 namespace MusaEngine
 {
-    FAssetData::FAssetData()
+    CAssetData::CAssetData()
     {
 
     }
 
-    FAssetData::~FAssetData()
+    CAssetData::~CAssetData()
     {
 
     }
 
-    int32 FAssetData::Initialize()
+    int32 CAssetData::Initialize()
     {
         AddSearchPath("../../");
         return 0;
     }
-    void FAssetData::Finalize()
+    void CAssetData::Finalize()
     {
 
     }
-    void FAssetData::Update()
+    void CAssetData::Update()
     {
 
     }
 
-    void FAssetData::AddSearchPath(const std::string& Path)
+    void CAssetData::AddSearchPath(const std::string& Path)
     {
         MSearchPaths.push_back(Path);
     }
 
-    void* FAssetData::OpenFile(const char* Name, AssetOpenMode Mode)
+    void* CAssetData::OpenFile(const char* Name, AssetOpenMode Mode)
     {
         FILE *FP = nullptr;
         for (auto SearchPath : MSearchPaths)
@@ -54,42 +54,42 @@ namespace MusaEngine
         return FP;
     }
 
-    FBuffer FAssetData::SyncOpenAndReadText(const char *FilePath)
+    CBuffer CAssetData::SyncOpenAndReadText(const char *FilePath)
     {
         void* FP = OpenFile(FilePath, MY_OPEN_TEXT);
-        FBuffer* Buffer = nullptr;
+        CBuffer* Buffer = nullptr;
 
         if (FP) {
-            uint64 length = GetSize(FP);
+            uint64 Length = GetSize(FP);
 
-            Buffer = new FBuffer(length + 1);
+            Buffer = new CBuffer(Length + 1);
             auto Data = Buffer->GetData();
-            length = fread(Data, 1, length, static_cast<FILE*>(FP));
-            Data[length] = '\0';
+            Length = fread(Data, 1, Length, static_cast<FILE*>(FP));
+            Data[Length] = '\0';
 
             CloseFile(FP);
         } else {
-            Buffer = new FBuffer();
+            Buffer = new CBuffer();
         }
 
         return *Buffer;
     }
 
-    std::string FAssetData::SyncOpenAndReadTextFileToString(const char* fileName)
+    std::string CAssetData::SyncOpenAndReadTextFileToString(const char* fileName)
     {
-        std::string result;
-        FBuffer buffer = SyncOpenAndReadText(fileName);
-        char* content = reinterpret_cast<char*>(buffer.GetData());
+        std::string Result;
+        CBuffer Buffer = SyncOpenAndReadText(fileName);
+        char* Content = reinterpret_cast<char*>(Buffer.GetData());
 
-        if (content)
+        if (Content)
         {
-            result = std::string(std::move(content));
+            Result = std::string(std::move(Content));
         }
 
-        return result;
+        return Result;
     }
 
-    uint64 FAssetData::GetSize(void* FP)
+    uint64 CAssetData::GetSize(void* FP)
     {
         FILE* _fp = static_cast<FILE*>(FP);
 
@@ -101,7 +101,7 @@ namespace MusaEngine
         return length;
     }
 
-    void FAssetData::CloseFile(void* FP)
+    void CAssetData::CloseFile(void* FP)
     {
         fclose((FILE*)FP);
         FP = nullptr;
