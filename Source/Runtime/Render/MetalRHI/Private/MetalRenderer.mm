@@ -1,10 +1,11 @@
+#import "Render/RHI/Public/RHI.h"
 #import "Render/MetalRHI/Public/MetalRHI.h"
 #import "Render/MetalRHI/Public/MetalRenderer.h"
 using namespace MusaEngine;
 
 @implementation MetalRenderer
 {
-    
+    dispatch_semaphore_t sg;
 }
 
 - (void) dealloc
@@ -31,6 +32,7 @@ using namespace MusaEngine;
     _device = device;
     
     _commandQueue = [_device newCommandQueue];
+    sg = dispatch_semaphore_create(1);
     return self;
 }
 
@@ -66,10 +68,18 @@ using namespace MusaEngine;
     return _shaders[shaderIndex];
 }
 
-- (void) drawDebug:(NSInteger) vertexShaderIndex Fragment:(NSInteger) fragmentShaderIndex
+- (void) drawFrame
 {
-    id<MTLFunction> vertexFunction = [self getShader:vertexShaderIndex];
-    id<MTLFunction> fragmentFunction = [self getShader:fragmentShaderIndex];
+    [_mtkView setNeedsDisplay:YES];
+}
+
+- (void) draw
+{
+    auto frame = GDMODULE(CRHI)->GetFrame();
+    
+    //dispatch_semaphore_wait(sg, DISPATCH_TIME_FOREVER);
+    id<MTLFunction> vertexFunction = [self getShader:frame->MVertexShader];
+    id<MTLFunction> fragmentFunction = [self getShader:frame->MFragmentShader];
     if (vertexFunction == nil || fragmentFunction == nil)
     {
         return;
@@ -91,6 +101,8 @@ using namespace MusaEngine;
     id<MTLBuffer> VertexBuffer = [_device newBufferWithBytes:VertexArray length:sizeof(VertexArray) options:MTLResourceCPUCacheModeDefaultCache];
 
     id<MTLCommandBuffer> CommandBuffer = [_commandQueue commandBuffer];
+    CommandBuffer.label = @"Debug Command Buffer";
+    [CommandBuffer enqueue];
 
     MTLRenderPassDescriptor* RenderPassDes = [[MTLRenderPassDescriptor alloc] init];
     RenderPassDes.colorAttachments[0].texture = [_mtkView.currentDrawable texture];
@@ -108,8 +120,14 @@ using namespace MusaEngine;
 
     [RenderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:3];
     [RenderEncoder endEncoding];
-
-    [CommandBuffer presentDrawable:static_cast<id<MTLDrawable>>(_mtkView.currentDrawable)];
+    
+    [CommandBuffer presentDrawable:_mtkView.currentDrawable];
+    
+    __block dispatch_semaphore_t block_sema = sg;
+    [CommandBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
+        //dispatch_semaphore_signal(block_sema);
+    }];
+    
     [CommandBuffer commit];
 }
 

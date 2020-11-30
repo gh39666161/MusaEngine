@@ -1,3 +1,4 @@
+#pragma once
 #import <MetalKit/MetalKit.h>
 
 @interface MetalRenderer : NSObject
@@ -14,7 +15,6 @@
 device:(nonnull id<MTLDevice>) device;
 - (NSInteger)compileShader:(nonnull NSString*) source functionName: (nonnull NSString*) name;
 - (id<MTLFunction>_Nullable) getShader:(NSInteger) shaderIndex;
-
-- (void) drawDebug:(NSInteger) vertexShaderIndex Fragment:(NSInteger) fragmentShaderIndex;
-
+- (void) drawFrame;
+- (void) draw;
 @end

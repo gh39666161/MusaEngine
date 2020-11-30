@@ -1,4 +1,4 @@
-#import "EditorApp/Mac/Public/AppDelegate.h"
+#import "MusaEditor/Mac/Public/AppDelegate.h"
 
 @interface AppDelegate ()
 

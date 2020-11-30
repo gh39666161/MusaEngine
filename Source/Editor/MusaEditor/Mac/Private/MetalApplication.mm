@@ -1,13 +1,10 @@
-#import "EditorApp/Mac/Public/MetalView.h"
-#import "EditorApp/Mac/Public/AppDelegate.h"
-#import "EditorApp/Mac/Public/WindowDelegate.h"
-#import "EditorApp/Mac/Public/MetalApplication.h"
+#import "MusaEditor/Mac/Public/MetalView.h"
+#import "MusaEditor/Mac/Public/AppDelegate.h"
+#import "MusaEditor/Mac/Public/WindowDelegate.h"
+#import "MusaEditor/Mac/Public/MetalApplication.h"
 
 namespace MusaEngine
 {
-    CMetalApplication GMetalApp;
-    CMetalApplication* GPApp = &GMetalApp;
-
     CMetalApplication::CMetalApplication():CApplication()
     {
         
@@ -27,25 +24,25 @@ namespace MusaEngine
         int result = 0;
 
         [NSApplication  sharedApplication];
-
+        id appDelegate = [[AppDelegate alloc] init];
+        [NSApp setDelegate: appDelegate];
+        [appDelegate release];
+        [NSApp activateIgnoringOtherApps:YES];
+        [NSApp finishLaunching];
+        
         // Menu
-        NSString* appName = @"MusaEngine";
+        NSString* appName = @"MusaEditor";
         id menubar = [[NSMenu alloc] initWithTitle:appName];
-        id appMenuItem = [NSMenuItem alloc];
+        id appMenuItem = [[NSMenuItem alloc] init];
         [menubar addItem: appMenuItem];
         [NSApp setMainMenu:menubar];
 
-        id appMenu = [NSMenu alloc];
+        id appMenu = [[NSMenu alloc] init];
         id quitMenuItem = [[NSMenuItem alloc] initWithTitle:@"Quit"
             action:@selector(terminate:)
             keyEquivalent:@"q"];
         [appMenu addItem:quitMenuItem];
         [appMenuItem setSubmenu:appMenu];
-
-        id appDelegate = [AppDelegate alloc];
-        [NSApp setDelegate: appDelegate];
-        [NSApp activateIgnoringOtherApps:YES];
-        [NSApp finishLaunching];
 
         NSInteger style = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable |
                           NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
@@ -59,7 +56,6 @@ namespace MusaEngine
         [menubar release];
         [appMenu release];
         [appMenuItem release];
-        [appDelegate release];
         [winDelegate release];
         
         return result;
