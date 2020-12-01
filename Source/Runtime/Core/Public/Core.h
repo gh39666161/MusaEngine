@@ -6,6 +6,7 @@
 
 #define CHECK(X) assert(X);
 #define GMODULE(MODULE) MODULE::GetModule<MODULE>()
+#define GDMODULE(MODULE) MODULE::GetDerived()
 
 #define IDX_NONE -1;
 

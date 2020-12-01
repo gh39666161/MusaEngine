@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include "Render/RHI/Public/RHIDefines.h"
-#include "Render/MetalRHI/Public/MetalRHI.h"
 #include "Core/Public/RuntimeModule.hpp"
+#include "Render/RHI/Public/RHIFrame.h"
 
 namespace MusaEngine
 {
@@ -11,13 +11,13 @@ namespace MusaEngine
     public:
         CRHI();
         virtual ~CRHI();
-        int32 Initialize() override;
-        void Finalize() override;
-        void Update() override;
-        uint32 CompileShader(const std::string& File, RHIShaderType CompileShaderType);
+        virtual void DrawDebug() = 0;
+        virtual CRHIFrame* GetFrame();
+    public:
+        static CRHI* GetDerived();
     private:
-        bool MUseOpengl;
-        uint32 MVertexShader;
-        uint32 MFragmentShader;
+        static bool MUseOpengl;
+    protected:
+        CRHIFrame* MFrame;
     };
 }

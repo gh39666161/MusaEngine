@@ -1,4 +1,5 @@
 #pragma once
+#import <Cocoa/Cocoa.h>
 #include "Core/Public/Core.h"
 #include "Platform/Public/Application.h"
 

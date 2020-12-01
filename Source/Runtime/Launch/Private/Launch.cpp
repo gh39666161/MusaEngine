@@ -1,33 +1,54 @@
 #include <stdio.h>
-#include "Core/Public/Engine.h"
 #include "Launch/Public/Launch.h"
 using namespace MusaEngine;
 
 namespace MusaEngine
 {
-    extern CApplication* GPApp;
-}
+    CApplication* CLaunch::MGApp = nullptr;
 
-int main(int argc, char* argv[])
-{
-    if (GPApp->Initialize() != 0)
+    CApplication* CLaunch::GetApp()
     {
-        printf("App Initialize failed, will exit now.");
-        return 1;
+        return MGApp;
     }
-    CHECK(GMODULE(CAsset)->Initialize() == 0);
-    CHECK(GMODULE(CRHI)->Initialize() == 0);
 
-    while(!GPApp->IsQuit())
+    int32 CLaunch::Init()
     {
-        GPApp->Update();
+        if (GetApp()->Initialize() != 0)
+        {
+            printf("App Initialize failed, will exit now.");
+            return 1;
+        }
+        
+        CHECK(GMODULE(CAsset)->Initialize() == 0);
+        CHECK(GDMODULE(CRHI)->Initialize() == 0);
+        return 0;
+    }
+
+    void CLaunch::Loop()
+    {
+        GetApp()->Update();
         GMODULE(CAsset)->Update();
-        GMODULE(CRHI)->Update();
+        GDMODULE(CRHI)->DrawDebug();
+        GDMODULE(CRHI)->Update();
     }
     
-    GMODULE(CAsset)->Finalize();
-    GMODULE(CRHI)->Finalize();
-    GPApp->Finalize();
-
-    return 0;
+    void CLaunch::Exit()
+    {
+        GMODULE(CAsset)->Finalize();
+        GDMODULE(CRHI)->Finalize();
+        GetApp()->Finalize();
+    }
+    
+    void CLaunch::Launch(CApplication* GApp)
+    {
+        MGApp = GApp;
+        CHECK(MGApp != nullptr);
+        
+        CHECK(Init() == 0);
+        while(!GetApp()->IsQuit())
+        {
+            Loop();
+        }
+        Exit();
+    }
 }

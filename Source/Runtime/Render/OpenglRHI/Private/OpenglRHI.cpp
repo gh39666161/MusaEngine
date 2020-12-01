@@ -66,7 +66,7 @@ namespace MusaEngine
         
     }
 
-    uint32 COpenglRHI::CompileShader(const std::string& Vertext, const std::string& Fragment)
+    int32 COpenglRHI::CompileShader(const std::string& Vertext, const std::string& Fragment)
     {
         int status;
         // Create a vertex and fragment shader object.

@@ -1,4 +1,4 @@
-#import "EditorApp/Mac/Public/MetalView.h"
+#import "MusaEditor/Mac/Public/MetalView.h"
 
 @implementation MetalView
 {
@@ -53,7 +53,10 @@
 }
 
 - (void)drawRect:(CGRect)drawRect {
-    // g_pGraphicsManager->Tick();
+    if (_metalRenderer != nil)
+    {
+        [_metalRenderer draw];
+    }
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
