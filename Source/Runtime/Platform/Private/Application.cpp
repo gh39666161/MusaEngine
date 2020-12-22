@@ -21,6 +21,10 @@ namespace MusaEngine
     }
     bool CApplication::IsQuit()
     {
-
+        return MBQuit;
+    }
+    void CApplication::Quit()
+    {
+        MBQuit = true;
     }
 }

@@ -12,5 +12,6 @@ namespace MusaEngine
     public:
         uint32 MVertexShader;
         uint32 MFragmentShader;
+        bool MIsOk;
     };
 }

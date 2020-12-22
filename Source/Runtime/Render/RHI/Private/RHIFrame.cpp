@@ -4,7 +4,8 @@ namespace MusaEngine
 {
     CRHIFrame::CRHIFrame():
     MVertexShader(0),
-    MFragmentShader(0)
+    MFragmentShader(0),
+    MIsOk(false)
     {
         
     }

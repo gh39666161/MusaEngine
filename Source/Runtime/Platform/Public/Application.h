@@ -12,6 +12,7 @@ namespace MusaEngine
         virtual void Finalize();
         virtual void Update();
         virtual bool IsQuit();
+        virtual void Quit();
     protected:
         bool MBQuit;
     };
