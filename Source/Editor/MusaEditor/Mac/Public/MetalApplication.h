@@ -1,5 +1,4 @@
 #pragma once
-#import <Cocoa/Cocoa.h>
 #include "Core/Public/Core.h"
 #include "Platform/Public/Application.h"
 
@@ -12,13 +11,5 @@ namespace MusaEngine
         void Finalize() override;
         // One cycle of the main loop
         void Update() override;
-
-        //void* GetMainWindowHandler() override;
-
-    protected:
-        void CreateMainWindow();
-
-    protected:
-        NSWindow* MPWindow;
     };
 }

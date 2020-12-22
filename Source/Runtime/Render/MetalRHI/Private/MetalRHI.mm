@@ -29,18 +29,19 @@ namespace MusaEngine
 
     void CMetalRHI::Finalize()
     {
-
+        [MMetalRenderer release];
+        MMetalRenderer = nil;
     }
 
     void CMetalRHI::Update()
     {
-        [MMetalRenderer drawFrame];
     }
 
     void CMetalRHI::DrawDebug()
     {
         MFrame->MVertexShader = MVertexShader;
         MFrame->MFragmentShader = MFragmentShader;
+        MFrame->MIsOk = true;
     }
 
     void CMetalRHI::SetMetalRenderer(MetalRenderer* Renderer)
