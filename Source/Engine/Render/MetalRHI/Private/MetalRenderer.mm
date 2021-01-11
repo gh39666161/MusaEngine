@@ -51,17 +51,15 @@ static const NSUInteger kMaxBuffersInFlight = 3;
     /// Per frame updates here
     dispatch_semaphore_wait(_inFlightSemaphore, DISPATCH_TIME_FOREVER);
     
-    auto frame = GDMODULE(CRHI)->GetFrame();
-    if (!frame->MIsOk) {
-        return;
-    }
-    
+    auto frame = GDMODULE(CRHI)->GetDrawFrame();
     id<MTLFunction> vertexFunction = [self getShader:frame->MVertexShader];
     id<MTLFunction> fragmentFunction = [self getShader:frame->MFragmentShader];
     if (vertexFunction == nil || fragmentFunction == nil)
     {
         return;
     }
+    GDMODULE(CRHI)->FinishDrawFrame();
+    
 
     id <MTLCommandBuffer> CommandBuffer = [_commandQueue commandBuffer];
     CommandBuffer.label = @"MyCommand";
