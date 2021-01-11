@@ -6,8 +6,7 @@
 //  Copyright © 2020 musa. All rights reserved.
 //
 
-#import "Launch/Public/Launch.h"
-#import "MusaEditor/Mac/Public/MetalApplication.h"
+#import "Core/Public/Engine.h"
 #import "MusaEditor/Mac/Public/AppDelegate.h"
 
 @interface AppDelegate ()
@@ -37,12 +36,11 @@
 }
 
 -(void)startMusaEngineThread: (id)param {
-    MusaEngine::CMetalApplication GMetalApp;
-    MusaEngine::CLaunch::Launch(static_cast<MusaEngine::CApplication*>(&GMetalApp));
+    MusaEngine::CGEngine::Start();
 }
 
 -(void)quitMusaEngine {
-    MusaEngine::CLaunch::GetApp()->Quit();
+    MusaEngine::CGEngine::ReqExist();
     while ([_engineThread isCancelled] == NO && [_engineThread isFinished] == NO){
         [NSThread sleepForTimeInterval:0.1];
     }

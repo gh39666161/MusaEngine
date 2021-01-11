@@ -23,7 +23,6 @@ IF(APPLE)
     TARGET_LINK_LIBRARIES(MusaEditor Common)
     TARGET_LINK_LIBRARIES(MusaEditor Asset)
     TARGET_LINK_LIBRARIES(MusaEditor Platform)
-    TARGET_LINK_LIBRARIES(MusaEditor Launch)
     TARGET_LINK_LIBRARIES(MusaEditor Render)
     
 ELSEIF(WIN32)
