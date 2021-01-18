@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Public/Core.h"
+#include "Core/Public/Vector.h"
 
 namespace MusaEngine
 {
@@ -11,5 +11,13 @@ enum RHIShaderType
 };
 
 const int32 MAX_FRAME_BUFF_COUNT = 5;
+
+struct RHIVertex
+{
+public:
+    Vec4 Pos;
+public:
+    RHIVertex(): Pos(Vec4::Zero) {}
+};
 
 }

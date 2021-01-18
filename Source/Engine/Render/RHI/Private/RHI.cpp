@@ -41,6 +41,8 @@ void CRHI::BeginFrame()
         MFrameIndexLock[MRenderFrameIndex].clear();
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
+    
+    MFrameCircleQueue[MRenderFrameIndex] = new CRHIFrame();
 }
 
 void CRHI::EndFrame()
@@ -53,9 +55,28 @@ void CRHI::EndFrame()
     }
 }
 
-void CRHI::SetCurrentFrame(CRHIFrame *Frame)
+void CRHI::BeginPass()
 {
-    MFrameCircleQueue[MRenderFrameIndex] = Frame;
+    GetRenderFrame()->BeginPass();
+}
+
+void CRHI::EndPass()
+{
+    GetRenderFrame()->EndPass();
+}
+
+CRHIPass* CRHI::GetCurrentPass()
+{
+    CRHIPass* Pass = GetRenderFrame()->GetCurrentPass();
+    CHECK(Pass != nullptr);
+    
+    return Pass;
+}
+
+CRHIFrame* CRHI::GetRenderFrame()
+{
+    CHECK(MFrameCircleQueue[MRenderFrameIndex] != nullptr);
+    return MFrameCircleQueue[MRenderFrameIndex];
 }
 
 CRHIFrame* CRHI::GetDrawFrame()

@@ -1,6 +1,4 @@
-#include <stdio.h>
 #include "Core/Public/Engine.h"
-using namespace MusaEngine;
 
 namespace MusaEngine
 {

@@ -5,12 +5,11 @@
 namespace MusaEngine
 {
 
-const std::string VS_SHADER_SOURCE_FILE = "Shader/colorvs.metal";
-const std::string PS_SHADER_SOURCE_FILE = "Shader/colorps.metal";
+const std::string VS_SHADER_SOURCE_FILE = "Shader/mainvs.metal";
+const std::string PS_SHADER_SOURCE_FILE = "Shader/mainvs.metal";
 
 CMetalRHI::CMetalRHI():
 CRHI(),
-MFrame(nullptr),
 MVertexShader(0),
 MFragmentShader(0)
 {
@@ -42,23 +41,51 @@ void CMetalRHI::Update()
 void CMetalRHI::BeginFrame()
 {
     CRHI::BeginFrame();
-    MFrame = new CRHIFrame();
 }
 
 void CMetalRHI::EndFrame()
 {
-    SetCurrentFrame(MFrame);
-    MFrame = nullptr;
-    
     CRHI::EndFrame();
 }
 
 void CMetalRHI::DrawDebug()
 {
     BeginFrame();
-    MFrame->MVertexShader = MVertexShader;
-    MFrame->MFragmentShader = MFragmentShader;
-    MFrame->MIsOk = true;
+    
+    BeginPass();
+    CRHIPSO* PSO = new CRHIPSO();
+    PSO->SetVertexShader(MVertexShader);
+    PSO->SetFragmentShader(MFragmentShader);
+    CRHIVertexFactory* VertexFactory = new CRHIVertexFactory();
+    RHIVertex MyVertex[3];
+    MyVertex[0].Pos = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
+    MyVertex[1].Pos = Vec4(-1.0f, -1.0f, 0.0f, 1.0f);
+    MyVertex[2].Pos = Vec4(1.0f, -1.0f, 0.0f, 1.0f);
+    for (int i = 0; i < 3; i++)
+    {
+        VertexFactory->AddVertex(MyVertex[i]);
+        VertexFactory->AddIndice(i);
+    }
+    PSO->SetVertexFactory(VertexFactory);
+    GetCurrentPass()->PushPSO(PSO);
+    
+    PSO = new CRHIPSO();
+    PSO->SetVertexShader(MVertexShader);
+    PSO->SetFragmentShader(MFragmentShader);
+    VertexFactory = new CRHIVertexFactory();
+    RHIVertex MyVertex2[3];
+    MyVertex2[0].Pos = Vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    MyVertex2[1].Pos = Vec4(0.0f, 1.0f, 0.0f, 1.0f);
+    MyVertex2[2].Pos = Vec4(-1.0f, 0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < 3; i++)
+    {
+        VertexFactory->AddVertex(MyVertex2[i]);
+        VertexFactory->AddIndice(i);
+    }
+    PSO->SetVertexFactory(VertexFactory);
+    GetCurrentPass()->PushPSO(PSO);
+    EndPass();
+
     EndFrame();
 }
 
