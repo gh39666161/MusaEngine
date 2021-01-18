@@ -16,10 +16,15 @@ public:
     virtual void DrawDebug() = 0;
     virtual void BeginFrame();
     virtual void EndFrame();
+    
+    virtual void BeginPass();
+    virtual void EndPass();
+    virtual CRHIPass* GetCurrentPass();
+    
     CRHIFrame* GetDrawFrame();
     void FinishDrawFrame();
 protected:
-    virtual void SetCurrentFrame(CRHIFrame* Frame);
+    CRHIFrame* GetRenderFrame();
 public:
     static CRHI* GetDerived();
 private:

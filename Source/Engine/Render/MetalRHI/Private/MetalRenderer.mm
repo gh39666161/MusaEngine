@@ -6,7 +6,6 @@
 //  Copyright © 2020 musa. All rights reserved.
 //
 
-#import "Render/MetalRHI/Public/MetalRHI.h"
 #import "Render/MetalRHI/Public/MetalRenderer.h"
 using namespace MusaEngine;
 
@@ -19,6 +18,7 @@ static const NSUInteger kMaxBuffersInFlight = 3;
     dispatch_semaphore_t _inFlightSemaphore;
     id <MTLDevice> _device;
     id <MTLCommandQueue> _commandQueue;
+    id <MTLCommandBuffer> _commandBuffer;
     NSMutableArray<id<MTLFunction>>* _shaders;
     MTKView* _mtkView;
 }
@@ -46,69 +46,6 @@ static const NSUInteger kMaxBuffersInFlight = 3;
 //    _projectionMatrix = matrix_perspective_right_hand(65.0f * (M_PI / 180.0f), aspect, 0.1f, 100.0f);
 }
 
-- (void)drawInMTKView:(nonnull MTKView *)view
-{
-    /// Per frame updates here
-    dispatch_semaphore_wait(_inFlightSemaphore, DISPATCH_TIME_FOREVER);
-    
-    auto frame = GDMODULE(CRHI)->GetDrawFrame();
-    id<MTLFunction> vertexFunction = [self getShader:frame->MVertexShader];
-    id<MTLFunction> fragmentFunction = [self getShader:frame->MFragmentShader];
-    if (vertexFunction == nil || fragmentFunction == nil)
-    {
-        return;
-    }
-    GDMODULE(CRHI)->FinishDrawFrame();
-    
-
-    id <MTLCommandBuffer> CommandBuffer = [_commandQueue commandBuffer];
-    CommandBuffer.label = @"MyCommand";
-
-    __block dispatch_semaphore_t block_sema = _inFlightSemaphore;
-    [CommandBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer)
-     {
-         dispatch_semaphore_signal(block_sema);
-     }];
-    [CommandBuffer enqueue];
-
-    MTLRenderPipelineDescriptor* Descriptor = [[MTLRenderPipelineDescriptor alloc] init];
-    Descriptor.vertexFunction = vertexFunction;
-    Descriptor.fragmentFunction = fragmentFunction;
-    Descriptor.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
-
-    id<MTLRenderPipelineState> PipelineState = [_device newRenderPipelineStateWithDescriptor:Descriptor error:nil];
-    [Descriptor release];
-
-    float VertexArray[] = {
-        1.0f,  1.0f, 0.0f,
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f
-    };
-    id<MTLBuffer> VertexBuffer = [_device newBufferWithBytes:VertexArray length:sizeof(VertexArray) options:MTLResourceCPUCacheModeDefaultCache];
-
-
-    MTLRenderPassDescriptor* RenderPassDes = [[MTLRenderPassDescriptor alloc] init];
-    RenderPassDes.colorAttachments[0].texture = [_mtkView.currentDrawable texture];
-    RenderPassDes.colorAttachments[0].loadAction = MTLLoadActionClear;
-    RenderPassDes.colorAttachments[0].clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0);
-
-    id<MTLRenderCommandEncoder> RenderEncoder = [CommandBuffer renderCommandEncoderWithDescriptor:RenderPassDes];
-    [RenderPassDes release];
-
-    [RenderEncoder setRenderPipelineState:PipelineState];
-    [RenderEncoder setVertexBuffer:VertexBuffer offset:0 atIndex:0];
-    RenderEncoder.label = @"Draw";
-    [PipelineState release];
-    [VertexBuffer release];
-
-    [RenderEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:3];
-    [RenderEncoder endEncoding];
-    
-    [CommandBuffer presentDrawable:view.currentDrawable];
-    
-    [CommandBuffer commit];
-}
-
 - (NSInteger)compileShader:(nonnull NSString*) source functionName: (nonnull NSString*) name;
 {
     NSError *error = nil;
@@ -134,12 +71,42 @@ static const NSUInteger kMaxBuffersInFlight = 3;
 
 - (id<MTLFunction>) getShader:(NSInteger) shaderIndex
 {
+    if (shaderIndex == IDX_NONE)
+    {
+        return nil;
+    }
     if ([_shaders count] <= shaderIndex)
     {
         return nil;
     }
     return _shaders[shaderIndex];
 }
+
+- (void)drawInMTKView:(nonnull MTKView *)view
+{
+    /// Per frame updates here
+    dispatch_semaphore_wait(_inFlightSemaphore, DISPATCH_TIME_FOREVER);
+    id <MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
+    commandBuffer.label = @"MyCommand";
+
+    __block dispatch_semaphore_t block_sema = _inFlightSemaphore;
+    [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer)
+     {
+         dispatch_semaphore_signal(block_sema);
+     }];
+    [commandBuffer enqueue];
+    
+    auto frame = GDMODULE(CRHI)->GetDrawFrame();
+    for (CRHIPass* rhiPass: frame->GetPassList())
+    {
+        [self drawPass:rhiPass withCommandBuffer:commandBuffer];
+    }
+    GDMODULE(CRHI)->FinishDrawFrame();
+    
+    [commandBuffer presentDrawable:view.currentDrawable];
+    [commandBuffer commit];
+}
+
 
 - (void)dealloc
 {
@@ -148,6 +115,106 @@ static const NSUInteger kMaxBuffersInFlight = 3;
     [_commandQueue release];
     [_shaders release];
     [super dealloc];
+}
+
+//- (void) drawPass:(nonnull CRHICommand*) rhiCommand withCommandBuffer:(id<MTLCommandBuffer>) commandBuffer
+//{
+//    id<MTLFunction> vertexFunction = [self getShader:rhiCommand->GetVertexShader()];
+//    id<MTLFunction> fragmentFunction = [self getShader:rhiCommand->GetFragmentShader()];
+//    if (vertexFunction == nil || fragmentFunction == nil)
+//    {
+//        return;
+//    }
+//
+//    CRHIVertexFactory* rhiVertexFactory = rhiCommand->GetVertexFactory();
+//    CBuffer* rhiVertexBuffer = rhiVertexFactory->GetVertexBuffer();
+//    CBuffer* rhiIndiceBuffer = rhiVertexFactory->GetIndiceBuffer();
+//    uint32 rhiIndiceCount = rhiVertexFactory->GetIndiceCount();
+//
+//    MTLRenderPassDescriptor* renderPassDes = _mtkView.currentRenderPassDescriptor;
+//    renderPassDes.colorAttachments[0].texture = [_mtkView.currentDrawable texture];
+//    renderPassDes.colorAttachments[0].loadAction = MTLLoadActionClear;
+//    renderPassDes.colorAttachments[0].clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0);
+//
+//    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDes];
+//    renderEncoder.label = @"Draw";
+//
+//    MTLRenderPipelineDescriptor* descriptor = [[MTLRenderPipelineDescriptor alloc] init];
+//    descriptor.vertexFunction = vertexFunction;
+//    descriptor.fragmentFunction = fragmentFunction;
+//    descriptor.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
+//    id<MTLRenderPipelineState> pipelineState = [_device newRenderPipelineStateWithDescriptor:descriptor error:nil];
+//    [descriptor release];
+//    [renderEncoder setRenderPipelineState:pipelineState];
+//    [pipelineState release];
+//
+//    id<MTLBuffer> VertexBuffer = [_device newBufferWithBytes:rhiVertexBuffer->GetData() length:rhiVertexBuffer->GetSize() options:MTLResourceCPUCacheModeDefaultCache];
+//    [renderEncoder setVertexBuffer:VertexBuffer offset:0 atIndex:0];
+//    [VertexBuffer release];
+//
+//    id<MTLBuffer> indexBuffer = [_device newBufferWithBytes:rhiIndiceBuffer->GetData() length:rhiIndiceBuffer->GetSize() options:MTLResourceStorageModeShared];
+//    [renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle
+//           indexCount:rhiIndiceCount
+//            indexType:MTLIndexTypeUInt32
+//          indexBuffer:indexBuffer
+//    indexBufferOffset:0];
+//    [indexBuffer release];
+//
+//    [renderEncoder endEncoding];
+    
+//}
+
+- (void) drawPass:(nonnull CRHIPass*) rhiPass withCommandBuffer:(id<MTLCommandBuffer>) commandBuffer
+{
+    MTLRenderPassDescriptor* renderPassDes = _mtkView.currentRenderPassDescriptor;
+    renderPassDes.colorAttachments[0].texture = [_mtkView.currentDrawable texture];
+    renderPassDes.colorAttachments[0].loadAction = MTLLoadActionClear;
+    renderPassDes.colorAttachments[0].clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0);
+
+    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDes];
+    renderEncoder.label = @"Draw";
+    for (CRHIPSO* rhiPSO: rhiPass->GetPSOList())
+    {
+        [self drawPSO:rhiPSO withRenderEncoder:renderEncoder];
+    }
+    
+    [renderEncoder endEncoding];
+}
+
+- (void)drawPSO:(nonnull MusaEngine::CRHIPSO*) rhiPSO withRenderEncoder:(id<MTLRenderCommandEncoder>_Nonnull) renderEncoder
+{
+    id<MTLFunction> vertexFunction = [self getShader:rhiPSO->GetVertexShader()];
+    id<MTLFunction> fragmentFunction = [self getShader:rhiPSO->GetFragmentShader()];
+    if (vertexFunction == nil || fragmentFunction == nil)
+    {
+        return;
+    }
+    
+    CRHIVertexFactory* rhiVertexFactory = rhiPSO->GetVertexFactory();
+    CBuffer* rhiVertexBuffer = rhiVertexFactory->GetVertexBuffer();
+    CBuffer* rhiIndiceBuffer = rhiVertexFactory->GetIndiceBuffer();
+    uint32 rhiIndiceCount = rhiVertexFactory->GetIndiceCount();
+    
+    MTLRenderPipelineDescriptor* descriptor = [[MTLRenderPipelineDescriptor alloc] init];
+    descriptor.vertexFunction = vertexFunction;
+    descriptor.fragmentFunction = fragmentFunction;
+    descriptor.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
+    id<MTLRenderPipelineState> pipelineState = [_device newRenderPipelineStateWithDescriptor:descriptor error:nil];
+    [descriptor release];
+    [renderEncoder setRenderPipelineState:pipelineState];
+    [pipelineState release];
+    
+    id<MTLBuffer> VertexBuffer = [_device newBufferWithBytes:rhiVertexBuffer->GetData() length:rhiVertexBuffer->GetSize() options:MTLResourceCPUCacheModeDefaultCache];
+    [renderEncoder setVertexBuffer:VertexBuffer offset:0 atIndex:0];
+    [VertexBuffer release];
+
+    id<MTLBuffer> indexBuffer = [_device newBufferWithBytes:rhiIndiceBuffer->GetData() length:rhiIndiceBuffer->GetSize() options:MTLResourceStorageModeShared];
+    [renderEncoder drawIndexedPrimitives:MTLPrimitiveTypeTriangle
+           indexCount:rhiIndiceCount
+            indexType:MTLIndexTypeUInt32
+          indexBuffer:indexBuffer
+    indexBufferOffset:0];
+    [indexBuffer release];
 }
 
 //- (void)_updateDynamicBufferState

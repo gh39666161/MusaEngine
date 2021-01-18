@@ -23,7 +23,6 @@ public:
     void SetMetalRenderer(MetalRenderer* Renderer);
     int32 CompileShader(const std::string& File, RHIShaderType CompileShaderType);
 private:
-    CRHIFrame* MFrame;
     MetalRenderer* MMetalRenderer;
     
     uint32 MVertexShader;
